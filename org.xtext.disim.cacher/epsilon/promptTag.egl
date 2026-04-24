@@ -1,0 +1,7 @@
+problem: {
+[%if (context <> "") {%]context: {[%=context%]}[%out.println();%][%}%]
+request: "[%=request%]."[%out.println();%]
+[%if (not posConst.isEmpty()) {%]must: {[%for (const in posConst) { %]"[%=const%]."; [%}%]}[%out.println();%][%}%]
+[%if (not negConst.isEmpty()) {%]must not: {[%for (const in negConst) { %]"[%=const%]."; [%}%]}[%out.println();%][%}%]
+[%if (not dataPresent.isEmpty()) {%]output prescriptions: {[%for (out_const in dataPresent) { %]"[%=out_const%]."; [%}%]}[%out.println();%][%}%]
+}

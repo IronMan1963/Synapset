@@ -1,0 +1,28 @@
+grammar org.xtext.disim.cacher.chains.Chains with org.eclipse.xtext.common.Terminals
+import "http://www.xtext.org/disim/cacher/Cacher"
+
+generate chains "http://www.xtext.org/disim/cacher/chains/Chains"
+
+Chain:
+	('This' 'is' name=ID '.')? &
+	
+	('Chain' 'these' 'prompts' ':' chain=PromptChain)
+	('Generate' 'all' 'using' chainType=ChainType 'prompts' '.')?
+;
+
+PromptChain:
+	list+=ExternalRef (',' list+=ExternalRef)* '.'
+;
+
+/* My external refs */
+ExternalRefParam:
+	pname=ID '=' pval=STRING
+;
+
+ExternalRef:
+	part=[Prompt] ('(' params+=ExternalRefParam (',' params+=ExternalRefParam)* ')')?
+;
+
+enum ChainType:
+	NONE='none' | NL='natural language' | TAG='tag based'
+;

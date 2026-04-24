@@ -1,0 +1,170 @@
+/*
+	Generation Engine
+*/
+
+pre {
+	var root = src!Prompt.all->first();	
+}
+
+post {	
+	src!Prompt.all->size().println("Total prompt parts: ");
+	("Generated: " + outputName).println();
+}
+
+/* Rule guards */
+operation Any isRoot(): Boolean { return self = root; }
+
+operation Any allowGen(type: Any, sep: String): Boolean {
+	if (not self.isRoot()) return false;
+	if (self.promptType <> type) return false;
+	
+	self.fuseUsed(sep);
+	return true;
+}
+
+/* Prompt parts builders */
+operation Any requestBuilder(sep: String, params:Collection): String {
+	var out = "";
+	for (p in self.request.body) {
+		if (p.content <> null and p.content <> "") {
+			if (p <> self.request.body->first()) out += sep;
+			out += p.content;
+		}
+		else if (p.param <> null) {
+			var pdefval = (p.param.def <> null) ? p.param.def : "";
+			out += (params->exists(e | e.pname = p.param.name)) ? 
+				params->selectOne(e | e.pname = p.param.name).pval : pdefval;
+		}
+	}
+	return out;
+}
+
+operation Any constraintBuilder(params: Collection): Collection {
+	var out = new List();
+	for (c in self.list) {	
+		var const = "";
+		for (p in c.body) {
+			if (p.content <> null and p.content <> "") {
+				const += p.content;
+			}
+			else if (p.param <> null) {
+				var pdefval = (p.param.def <> null) ? p.param.def : "";
+				const += (params->exists(e | e.pname = p.param.name)) ? 
+					params->selectOne(e | e.pname = p.param.name).pval : pdefval;
+			}
+		}
+		out.add(const);
+	}
+	return out;
+}
+
+/* MERGE prompts */
+operation Any fuseUsed(sep: String) {
+	if (self.usedPrompts <> null)	
+		for (e in self.usedPrompts.list) {
+			var up = e.part;
+			up.fuseUsed(sep);
+			if (up.bodyParams <> null) {
+				if (self.bodyParams = null) self.bodyParams = new src!BodyParamsList(); 
+				self.bodyParams.list.addAll(up.bodyParams.list);				
+			}
+			if (self.bodyParams <> null) {
+				for (op in e.params) {
+					if (self.bodyParams.list->exists(par | par.name = op.pname))
+						self.bodyParams.list->selectOne(par | par.name = op.pname).def=op.pval;
+				}
+			}						
+			self.request.body.addAll(up.request.body);
+			if (up.context <> null) {
+				if (self.context <> null) {
+					if (up.context.body <> null and up.context.body <> "") {
+						if (self.context.body <> null and self.context.body <> "") self.context.body += sep;
+						self.context.body += up.context.body;	
+					} 
+					self.context.external.addAll(up.context.external);
+				}				
+			}						
+			if (up.posConst <> null) {
+				if (self.posConst <> null) self.posConst.list.addAll(up.posConst.list);				
+			} 
+			if (up.negConst <> null) {
+				if (self.negConst <> null) self.negConst.list.addAll(up.negConst.list);
+			} 
+			if (up.dataPresent <> null) {
+				if (self.dataPresent <> null) self.dataPresent.list.addAll(up.dataPresent.list);
+			} 		
+		}
+}
+
+/* Prompt as a CONTEXT */
+operation Any getContext(t: String, sep: String): String {
+	if (self.context <> null) {
+		var ctx = "";					
+		for (e in self.context.external) {
+			if (ctx <> "") ctx += sep;		
+			ctx += e.getPrompt(t, sep); 
+		}		
+		if (self.context.body <> null and self.context.body <> "") {
+			if (ctx <> "") ctx += sep;
+			ctx += self.context.body + ".";
+		}				 
+		return ctx;
+	}
+	else return "";	
+}
+
+operation Any getPrompt(t: String, sep: String): String {
+	var part = self.part;
+	var temp = factory.load(t);	
+	temp.populate("problem", part.name);
+	temp.populate("context", part.getContext(t, sep));
+	temp.populate("request", part.requestBuilder(sep, self.params));
+	temp.populate("posConst", (part.posConst <> null) ? part.posConst.constraintBuilder(self.params) : new List());
+	temp.populate("negConst", (part.negConst <> null) ? part.negConst.constraintBuilder(self.params) : new List());
+	temp.populate("dataPresent", (part.dataPresent <> null) ? part.dataPresent.constraintBuilder(self.params) : new List());		
+	return temp.process();
+}
+
+/* Rules utils */
+operation Any getRulesParameters(temp: String, sep: String): Map {
+	var m = new Map();
+	m.put("problem", self.name);
+	m.put("context", self.getContext(temp, sep));
+	m.put("request", self.requestBuilder(sep, new List()));
+	m.put("posConst", (self.posConst <> null) ? self.posConst.constraintBuilder(new List()) : new List());
+	m.put("negConst", (self.negConst <> null) ? self.negConst.constraintBuilder(new List()) : new List());
+	m.put("dataPresent", (self.dataPresent <> null) ? self.dataPresent.constraintBuilder(new List()) : new List());	
+	return m;
+}
+
+
+/* 
+ * Executive NL prompt generation 
+ */
+rule ExecutiveNLPromptGeneration 
+	transform s : src!Prompt {
+
+	guard: s.allowGen(PromptType#NL, " and ")
+
+	template : "promptNL.egl"
+
+	parameters : s.getRulesParameters("promptNL.egl", " and ")
+
+	target : outputName
+}
+
+/* 
+ * Executive tag-value prompt generation 
+ */
+rule ExecutiveTagPromptGeneration 
+	transform s : src!Prompt {
+
+	guard: s.allowGen(PromptType#TAG, "; ")
+
+	template : "promptTag.egl"
+
+	parameters : s.getRulesParameters("promptTag.egl", "; ")
+
+	target : outputName
+}
+

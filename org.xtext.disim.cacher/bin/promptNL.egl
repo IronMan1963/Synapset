@@ -1,0 +1,7 @@
+I have a problem [%=problem%].
+[%if (context <> "") {%]The context of my problem [%=problem%] is: [%=context%][%out.println();%][%}%]
+I request the solution to my problem [%=problem%] that is [%=request%].[%out.println();%]
+[%if (not posConst.isEmpty()) {%]The solution of the problem [%=problem%] must be compliant to this set of constraints: [%for (const in posConst) { %][%=const%]; [%}%][%out.println();%][%}%]
+[%if (not negConst.isEmpty()) {%]The solution of the problem [%=problem%] must avoid this set of specifications: [%for (const in negConst) { %][%=const%]; [%}%][%out.println();%][%}%]
+[%if (not dataPresent.isEmpty()) {%]The resulting output of the problem [%=problem%] must conform to these prescriptions: [%for (out_const in dataPresent) { %][%=out_const%]; [%}%][%out.println();%][%}%]
+Solve problem [%=problem%]

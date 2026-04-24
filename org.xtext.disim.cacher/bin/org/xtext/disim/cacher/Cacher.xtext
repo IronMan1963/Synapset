@@ -1,0 +1,76 @@
+grammar org.xtext.disim.cacher.Cacher with org.eclipse.xtext.common.Terminals
+
+generate cacher "http://www.xtext.org/disim/cacher/Cacher"
+
+Prompt:
+	('This' 'is' name=ID '.')? &
+	('Use' usedPrompts=UsedPromptsList)? &
+	('Accepts' bodyParams=BodyParamsList 'as' 'parameters' '.')? &
+	
+	('The' 'given' 'context' 'is' context=Context)? &
+	('My' 'problem' 'is' request=Request) &
+		
+	('You' 'must' ':' posConst=ConstraintList)? &	
+	('You' 'must' 'not' ':' negConst=ConstraintList)? &
+	
+	('The' 'output' 'must' ':' dataPresent=OutputConstraintList)? &
+	('Generate' 'a' promptType=PromptType 'prompt' '.')?
+;
+
+BodyParamsList:
+	list+=BodyParam (',' list+=BodyParam)* 
+;
+
+UsedPromptsList:
+	list+=ExternalRef (',' list+=ExternalRef)* '.'
+;
+
+Context:
+	(external+=ExternalRef ('and' external+=ExternalRef)* | body=STRING) '.'
+;
+
+Request:
+	body+=BodyPart (',' body+=BodyPart)* '.'
+;
+
+ConstraintList:
+	list+=Constraint (';' list+=Constraint)* '.'
+;
+
+Constraint:
+	//body=STRING
+	body+=BodyPart (',' body+=BodyPart)*
+;
+
+OutputConstraintList:
+	list+=OutputConstraint (';' list+=OutputConstraint)* '.'
+;
+
+OutputConstraint:
+	//body=STRING
+	body+=BodyPart (',' body+=BodyPart)*
+;
+
+/* My external refs */
+ExternalRefParam:
+	pname=ID '=' pval=STRING
+;
+
+ExternalRef:
+	part=[Prompt] ('(' params+=ExternalRefParam (',' params+=ExternalRefParam)* ')')?
+;
+
+/* My body parts */
+BodyParam:
+	name=ID ('=' def=STRING)?
+;
+
+BodyPart:
+	content=STRING |
+	param=[BodyParam]
+;
+
+enum PromptType:
+	NL='natural language' | TAG='tag based'
+;
+

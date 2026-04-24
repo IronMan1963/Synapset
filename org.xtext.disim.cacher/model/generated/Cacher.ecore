@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="cacher" nsURI="http://www.xtext.org/disim/cacher/Cacher" nsPrefix="cacher">
+  <eClassifiers xsi:type="ecore:EClass" name="Prompt">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="usedPrompts" eType="#//UsedPromptsList"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bodyParams" eType="#//BodyParamsList"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="#//Context"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="request" eType="#//Request"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="posConst" eType="#//ConstraintList"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="negConst" eType="#//ConstraintList"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dataPresent" eType="#//OutputConstraintList"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="promptType" eType="#//PromptType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BodyParamsList">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="list" upperBound="-1" eType="#//BodyParam"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UsedPromptsList">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="list" upperBound="-1" eType="#//ExternalRef"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Context">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="external" upperBound="-1"
+        eType="#//ExternalRef" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="body" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Request">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//BodyPart"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ConstraintList">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="list" upperBound="-1" eType="#//Constraint"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Constraint">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//BodyPart"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OutputConstraintList">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="list" upperBound="-1" eType="#//OutputConstraint"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OutputConstraint">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="body" upperBound="-1" eType="#//BodyPart"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExternalRefParam">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pname" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pval" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExternalRef">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="part" eType="#//Prompt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="params" upperBound="-1"
+        eType="#//ExternalRefParam" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BodyParam">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="def" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BodyPart">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="content" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="param" eType="#//BodyParam"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="PromptType">
+    <eLiterals name="NL" literal="natural language"/>
+    <eLiterals name="TAG" value="1" literal="tag based"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,32 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.xtext.disim.cacher
+Bundle-ManifestVersion: 2
+Bundle-Name: org.xtext.disim.cacher
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.xtext.disim.cacher; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.16.0",
+ org.eclipse.emf.ecore,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.34.0",
+ org.eclipse.emf.common,
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
+ org.eclipse.epsilon.egl.engine;bundle-version="2.5.0",
+ org.eclipse.epsilon.emc.emf;bundle-version="2.5.0",
+ org.eclipse.epsilon.eol.engine;bundle-version="2.5.0",
+ org.eclipse.epsilon.common.dt;bundle-version="2.5.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Export-Package: org.xtext.disim.cacher.services,
+ org.xtext.disim.cacher.serializer,
+ org.xtext.disim.cacher.cacher,
+ org.xtext.disim.cacher.parser.antlr,
+ org.xtext.disim.cacher.scoping,
+ org.xtext.disim.cacher.cacher.impl,
+ org.xtext.disim.cacher.validation,
+ org.xtext.disim.cacher.parser.antlr.internal,
+ org.xtext.disim.cacher,
+ org.xtext.disim.cacher.cacher.util,
+ org.xtext.disim.cacher.generator
+Import-Package: org.apache.log4j

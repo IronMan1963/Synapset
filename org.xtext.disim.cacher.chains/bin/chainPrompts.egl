@@ -1,0 +1,5 @@
+Prompt chain [%=name%]
+[%var stepnum = 0; for (p in prompts) { stepnum++; %]
+--- **** Step #[%=stepnum%] **** ----
+[%=p%]
+[%}%]

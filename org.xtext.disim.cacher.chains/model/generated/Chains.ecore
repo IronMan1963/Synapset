@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="chains" nsURI="http://www.xtext.org/disim/cacher/chains/Chains"
+    nsPrefix="chains">
+  <eClassifiers xsi:type="ecore:EClass" name="Chain">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="chain" eType="#//PromptChain"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="chainType" eType="#//ChainType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PromptChain">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="list" upperBound="-1" eType="ecore:EClass platform:/resource/org.xtext.disim.cacher/model/generated/Cacher.ecore#//ExternalRef"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ChainType">
+    <eLiterals name="NONE" literal="none"/>
+    <eLiterals name="NL" value="1" literal="natural language"/>
+    <eLiterals name="TAG" value="2" literal="tag based"/>
+  </eClassifiers>
+</ecore:EPackage>
