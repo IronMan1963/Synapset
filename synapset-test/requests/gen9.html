@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accessible Landing</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    .skip-link { position:absolute; top:-40px; left:0; background:#000;
+      color:#fff; padding:8px; z-index:200; }
+    .skip-link:focus { top:0; }
+    nav { display:flex; justify-content:space-between; padding:1rem 2rem;
+      background:#000; color:#fff; position:sticky; top:0; }
+    .hero { text-align:center; padding:4rem 1rem; background:#1a1a1a; color:#fff; }
+    .hero h1 { font-size:2.5rem; color:#ffdd00; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:1.5rem; padding:2rem; }
+    .cta { text-align:center; padding:3rem; background:#1a1a1a; }
+    .cta button { padding:1rem 2rem; border:2px solid #ffdd00; border-radius:8px;
+      cursor:pointer; background:#ffdd00; color:#000; }
+    @media(max-width:768px){ .hero h1{font-size:1.8rem;} nav{flex-direction:column;} }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <nav role="navigation" aria-label="Main">
+    <div class="logo">Brand</div>
+    <ul><li><a href="#features">Features</a></li><li><a href="#cta">Get Started</a></li></ul>
+  </nav>
+  <main id="main">
+    <section class="hero" role="banner"><h1>Build Something Amazing</h1><p>Start here.</p></section>
+    <section id="features" class="grid" role="region" aria-label="Features">
+      <div class="card"><h3>Feature 1</h3><p>High contrast.</p></div>
+      <div class="card"><h3>Feature 2</h3><p>Accessible.</p></div>
+      <div class="card"><h3>Feature 3</h3><p>Keyboard navigable.</p></div>
+    </section>
+    <section id="cta" class="cta" role="region" aria-label="CTA">
+      <h2>Ready?</h2><button>Sign Up Now</button>
+    </section>
+  </main>
+  <footer role="contentinfo"><p>&copy; 2026 Brand.</p></footer>
+</body>
+</html>

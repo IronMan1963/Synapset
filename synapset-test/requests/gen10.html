@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Styled Landing</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    nav { display:flex; justify-content:space-between; padding:1rem 2rem;
+      background:#1a1a2e; color:#fff; position:sticky; top:0; }
+    .hero { text-align:center; padding:4rem 1rem;
+      background:linear-gradient(135deg,#0f3460,#16213e); color:#fff; }
+    .hero h1 { font-size:2.5rem; color:#e94560; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:1.5rem; padding:2rem; }
+    .card { background:#fff; padding:1.5rem; border-radius:8px; }
+    footer { text-align:center; padding:2rem; background:#1a1a2e; color:#ccc; }
+    @media(max-width:768px){ .hero h1{font-size:1.8rem;} nav{flex-direction:column;} }
+  </style>
+</head>
+<body>
+  <nav><div class="logo">Brand</div>
+    <ul><li><a href="#features">Features</a></li><li><a href="#cta">Get Started</a></li></ul>
+  </nav>
+  <section class="hero"><h1>Build Something Amazing</h1><p>Start here.</p></section>
+  <section id="features" class="grid">
+    <div class="card"><h3>Feature 1</h3><p>Description.</p></div>
+    <div class="card"><h3>Feature 2</h3><p>Description.</p></div>
+    <div class="card"><h3>Feature 3</h3><p>Description.</p></div>
+  </section>
+  <footer><p>&copy; 2026 Brand.</p></footer>
+</body>
+</html>
